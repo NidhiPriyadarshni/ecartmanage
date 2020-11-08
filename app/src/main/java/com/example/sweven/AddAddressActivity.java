@@ -12,7 +12,7 @@ import android.widget.Button;
 public class AddAddressActivity extends AppCompatActivity {
 
 
-    private Button saveBtn;
+    private Button saveBt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,8 @@ public class AddAddressActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Add a new Address");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        saveBtn = findViewById(R.id.save_btn);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        saveBt = findViewById(R.id.save_btn);
+        saveBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent deliveryIntent = new Intent(AddAddressActivity.this,DeliveryActivity.class);
