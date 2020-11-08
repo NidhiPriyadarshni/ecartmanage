@@ -21,8 +21,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 import static com.example.sweven.RegisterActivity.setSignUpFragment;
 
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (showCart) {
             drawer.setDrawerLockMode(1);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             gotoFragment("My Cart", new MyCartFragment(), -2);
         } else {
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -117,9 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.main_search_icon) {
             //todo:search
+            Toast.makeText(this,"SEARCH CLICKED NEDD TO ADD",Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.main_notification_icon) {
             //todo:notifications
+            Toast.makeText(this,"Notification NEDD TO ADD",Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.main_cart_icon) {
             final Dialog signInDialog = new Dialog(MainActivity.this);
@@ -191,7 +197,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_my_account) {
             gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
         } else if (id == R.id.nav_sign_out) {
-
+//TODO::Sign out add
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this,"SIGNED OUT ",Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
