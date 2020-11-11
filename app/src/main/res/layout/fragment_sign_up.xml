@@ -15,7 +15,7 @@
             android:id="@+id/sign_up_close_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl"
+
             android:layout_gravity="end"
             android:layout_marginTop="8dp"
             android:background="@android:color/transparent"

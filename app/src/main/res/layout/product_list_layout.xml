@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:id="@+id/product_item_pic"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:id="@+id/product_item_name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:id="@+id/product_item_price"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to wishlist"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/product_item_wishlist"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Add to cart"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/product_item_cart"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Out of stock"
+            android:id="@+id/product_item_outofstock"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</LinearLayout>
