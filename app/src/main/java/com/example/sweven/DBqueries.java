@@ -130,7 +130,15 @@ public class DBqueries {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        productItemsList.add(new ProductItemModel(documentSnapshot.get("productId").toString(),documentSnapshot.get("name").toString(),documentSnapshot.getDouble("price"),documentSnapshot.get("picUrl").toString(),documentSnapshot.getBoolean("isOutOfStock")));
+                        String productId="M..",name="xyz",picurl=null;
+                        double price=100;
+                        boolean outOfStock=false;
+                        if(documentSnapshot.get("productId")!=null)productId=documentSnapshot.get("productId").toString();
+                        if(documentSnapshot.get("name")!=null)name=documentSnapshot.get("name").toString();
+                        if(documentSnapshot.get("price")!=null)price=documentSnapshot.getDouble("price");
+                        if(documentSnapshot.get("picUrl")!=null)picurl=documentSnapshot.get("picUrl").toString();
+                        if(documentSnapshot.get("isOutOfStock")!=null)outOfStock=documentSnapshot.getBoolean("isOutOfStock");
+                        productItemsList.add(new ProductItemModel(productId,name,price,picurl,outOfStock));
                     }
                     ProductListAdapter adapter=new ProductListAdapter(productItemsList);
                     adapter.notifyDataSetChanged();

@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -213,7 +214,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user=firebaseAuth.getCurrentUser();
+                            final FirebaseUser user=firebaseAuth.getCurrentUser();
                             UserProfileChangeRequest profile=new UserProfileChangeRequest.Builder().setDisplayName(fullname.getText().toString()).build();
                             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -221,9 +222,9 @@ public class SignUpFragment extends Fragment {
                                     if(task.isSuccessful()){
                                         Map<Object, String> userdata = new HashMap<>();
                                         userdata.put("fullname",fullname.getText().toString());
-                                        firebaseFirestore.collection("USERS").add(userdata).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        firebaseFirestore.collection("USERS").document(user.getUid()).set(userdata, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
-                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     mainIntent();
                                                 }else {
@@ -232,6 +233,7 @@ public class SignUpFragment extends Fragment {
                                                     String error = task.getException().getMessage();
                                                     Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
                                                 }
+
                                             }
                                         });
 

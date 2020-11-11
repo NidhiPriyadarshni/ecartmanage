@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,9 @@ public class MyWishlistFragment extends Fragment {
     }
 
     private RecyclerView myWishlistRecyclerView;
+    public static FirebaseFirestore firebaseFirestore;
+    public FirebaseUser user;
+    public String uid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +42,10 @@ public class MyWishlistFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myWishlistRecyclerView.setLayoutManager(linearLayoutManager);
         List<WishlistModel> wishlistModelList = new ArrayList<>();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        user= FirebaseAuth.getInstance().getCurrentUser();
+        uid=user.getUid();
 
         WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList,true);
         myWishlistRecyclerView.setAdapter(wishlistAdapter);

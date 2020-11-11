@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:layout_width="190dp"
         android:layout_height="190dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/product_item_pic"/>
+        android:id="@+id/product_item_picc"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/product_item_pic"
+        app:layout_constraintStart_toEndOf="@id/product_item_picc"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -23,23 +23,13 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/txtBlack"
-            android:id="@+id/product_item_name"/>
+            android:id="@+id/product_item_namee"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:id="@+id/product_item_price"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:padding="2dp"
-            android:text="Add to wishlist"
-            android:textSize="12sp"
-            android:background="@color/RecyclerViewsBackground"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/product_item_wishlist"/>
+            android:id="@+id/product_item_pricee"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +41,7 @@
             android:textColor="@color/colorAccent"
             android:background="@color/colorPrimary"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/product_item_cart"/>
+            android:id="@+id/product_item_cartt"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +52,7 @@
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             android:background="@color/btnRed"
-            android:id="@+id/product_item_outofstock"
+            android:id="@+id/product_item_outofstockk"
             android:layout_gravity="center_horizontal"
             android:visibility="gone"/>
     </LinearLayout>
@@ -70,8 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/product_item_picc"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/product_item_pic"
         android:background="@color/colorPrimaryDark"/>
 
 </android.support.constraint.ConstraintLayout>
