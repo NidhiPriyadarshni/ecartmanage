@@ -247,7 +247,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         private void setStripAd(String resource, String color) {
 
-            //Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.placeholder)).into(stripAdImage);
+            Glide.with(itemView.getContext()).load(resource)./*apply(new RequestOptions().placeholder(R.mipmap.placeholder)).*/into(stripAdImage);
             stripAdContainer.setBackgroundColor(Color.parseColor(color));
         }
     }
@@ -320,7 +320,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_description);
                 TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_price);
                 //productImage.setImageResource(horizontalProductScrollModelList.get(x).getProductImage());
-                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getProductImage()).apply(new RequestOptions().placeholder(R.mipmap.perfume)).into(productImage);
+                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getProductImage())/*.apply(new RequestOptions().placeholder(R.mipmap.perfume))*/.into(productImage);
                 productTitle.setText(horizontalProductScrollModelList.get(x).getProductTitle());
                 productDescription.setText(horizontalProductScrollModelList.get(x).getProductDescription());
                 productPrice.setText("Rs." + horizontalProductScrollModelList.get(x).getProductPrice() + "/-");

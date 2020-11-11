@@ -21,8 +21,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.sweven.RegisterActivity.setSignUpFragment;
 
@@ -55,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         frameLayout = findViewById(R.id.main_framelayout);
+        View navheader=navigationView.getHeaderView(0);
+        TextView name=(TextView)navheader.findViewById(R.id.main_fullname);
+        TextView mail=(TextView)navheader.findViewById(R.id.main_email);
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        if(user.getDisplayName()!=null)name.setText(user.getDisplayName());
+        if(user.getEmail()!=null)mail.setText(user.getEmail());
 
 
         if (showCart) {
@@ -133,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onClick(View v) {
                     signInDialog.dismiss();
-                 setSignUpFragment =false;
-                 startActivity(registerIntent);
+                    setSignUpFragment =false;
+                    startActivity(registerIntent);
                 }
             });
             dialogSignUpBtn.setOnClickListener(new View.OnClickListener() {

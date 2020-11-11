@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -211,18 +213,34 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Map<Object, String> userdata = new HashMap<>();
-                            userdata.put("fullname",fullname.getText().toString());
-                            firebaseFirestore.collection("USERS").add(userdata).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            FirebaseUser user=firebaseAuth.getCurrentUser();
+                            UserProfileChangeRequest profile=new UserProfileChangeRequest.Builder().setDisplayName(fullname.getText().toString()).build();
+                            user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        mainIntent();
-                                    }else {
+                                        Map<Object, String> userdata = new HashMap<>();
+                                        userdata.put("fullname",fullname.getText().toString());
+                                        firebaseFirestore.collection("USERS").add(userdata).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                if(task.isSuccessful()){
+                                                    mainIntent();
+                                                }else {
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    signUpBtn.setEnabled(true);
+                                                    String error = task.getException().getMessage();
+                                                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+
+                                    }else{
                                         progressBar.setVisibility(View.INVISIBLE);
                                         signUpBtn.setEnabled(true);
                                         String error = task.getException().getMessage();
                                         Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
                                     }
                                 }
                             });

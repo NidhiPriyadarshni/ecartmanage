@@ -2,7 +2,6 @@ package com.example.sweven;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import java.util.List;
 public class DBqueries {
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModelList = new ArrayList<>();
-
+    public static List<ProductItemModel> productItemsList =new ArrayList<>();
     public static List<List<HomePageModel>> lists = new ArrayList<>();
     public static List<String> loadCategoriesNames = new ArrayList<>();
 
@@ -26,7 +25,7 @@ public class DBqueries {
     public static void loadCategories(final RecyclerView categoryRecyclerview, final Context context) {
 
 
-        firebaseFirestore.collection("CATEGORIES").orderBy("index").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("CATEGORIES")/*.orderBy("index")*/.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -111,7 +110,7 @@ public class DBqueries {
                     HomePageAdapter adapter = new HomePageAdapter(lists.get(index));
                     homePageRecyclerview.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-                    HomeFragment.swipeRefreshLayout.setRefreshing(false);
+                    //HomeFragment.swipeRefreshLayout.setRefreshing(false);
 
                 } else {
                     String error = task.getException().getMessage();
@@ -121,5 +120,27 @@ public class DBqueries {
         });
 
 
+    }
+
+    public static void loadProductList(final RecyclerView recyclerView, final Context context) {
+
+
+        firebaseFirestore.collection("PRODUCTS")/*.orderBy("index")*/.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        productItemsList.add(new ProductItemModel(documentSnapshot.get("productId").toString(),documentSnapshot.get("name").toString(),documentSnapshot.getDouble("price"),documentSnapshot.get("picUrl").toString(),documentSnapshot.getBoolean("isOutOfStock")));
+                    }
+                    ProductListAdapter adapter=new ProductListAdapter(productItemsList);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
+
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

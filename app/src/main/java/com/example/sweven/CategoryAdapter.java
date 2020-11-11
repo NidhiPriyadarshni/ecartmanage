@@ -64,7 +64,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         private void setCategoryIcon(String iconUrl) {
             if (!iconUrl.equals("null")){
-                //Glide.with(itemView.getContext()).load(iconUrl).apply(new RequestOptions().placeholder(R.mipmap.icon_placeholder)).into(categoryIcon);
+                Glide.with(itemView.getContext()).load(iconUrl)./*apply(new RequestOptions().placeholder(R.mipmap.icon_placeholder)).*/into(categoryIcon);
         }else{
                 categoryIcon.setImageResource(R.mipmap.home_icon);
             }
