@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView actionBarLogo;
     private int currentFragment = -1;
     private NavigationView navigationView;
+   FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this,"Notification NEDD TO ADD",Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.main_cart_icon) {
+
+
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            if(currentUser == null){
             final Dialog signInDialog = new Dialog(MainActivity.this);
             signInDialog.setContentView(R.layout.sign_in_dialog);
             signInDialog.setCancelable(true);
@@ -151,8 +157,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(registerIntent);
                 }
             });
-            signInDialog.show();
-            //gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
+            signInDialog.show();}
+            else
+            gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
             return true;
         } else if (id == android.R.id.home) {
             if (showCart) {
