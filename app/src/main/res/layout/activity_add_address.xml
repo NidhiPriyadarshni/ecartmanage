@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     tools:context=".AddAddressActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -48,7 +49,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-
+                app:srcCompat="@mipmap/profile_placeholder"
                 tools:layout_editor_absoluteX="120dp"
                 tools:layout_editor_absoluteY="152dp" />
 
