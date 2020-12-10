@@ -19,7 +19,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
 
     private List<AddressesModel> addressesModelList;
     private int MODE;
-    private int preSelectedPosition = -1;
+    public int preSelectedPosition = 0;
 
     public AddressesAdapter(List<AddressesModel> addressesModelList, int MODE) {
         this.addressesModelList = addressesModelList;
@@ -39,7 +39,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
         String address = addressesModelList.get(position).getAddress();
         String pincode = addressesModelList.get(position).getPincode();
         Boolean selected = addressesModelList.get(position).getSelected();
-        viewHolder.setData(fullname, address, pincode, selected, position);
+        viewHolder.setData(fullname, address, pincode,selected, position);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView icon;
+        public ImageView icon;
         private TextView fullName;
         private TextView address;
         private TextView pincode;
@@ -68,13 +68,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
             address.setText(useraddress);
             pincode.setText(userpincode);
             if (MODE == SELECT_ADDRESS) {
-                //icon.setImageResource(R.mipmap.check);
-                if (selected) {
-                    icon.setVisibility(View.VISIBLE);
-                    preSelectedPosition = position;
-                } else {
-                    icon.setVisibility(View.GONE);
-                }
+                icon.setImageResource(R.drawable.check);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -86,6 +80,13 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
                         }
                     }
                 });
+                if (preSelectedPosition == position) {
+                    icon.setVisibility(View.VISIBLE);
+                    preSelectedPosition = position;
+                } else {
+                    icon.setVisibility(View.GONE);
+                }
+
             } else if (MODE == MANAGE_ADDRESS) {
                 optionContainer.setVisibility(View.GONE);
                 //icon.setImageResource(R.mipmap.vertical_dots);

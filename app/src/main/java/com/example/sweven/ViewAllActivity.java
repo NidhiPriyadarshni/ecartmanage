@@ -36,14 +36,14 @@ public class ViewAllActivity extends AppCompatActivity {
         int layout_code=getIntent().getIntExtra("layout_code",-1);
         if(layout_code == 0){
 
-        recyclerView.setVisibility(View.VISIBLE);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setVisibility(View.VISIBLE);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
 
-        WishlistAdapter adapter = new WishlistAdapter(wishlistModelList,false);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            //WishlistAdapter adapter = new WishlistAdapter(wishlistModelList,false);
+            //recyclerView.setAdapter(adapter);
+            //adapter.notifyDataSetChanged();
         }
         else if(layout_code==1) {
             gridView.setVisibility(View.VISIBLE);
@@ -55,8 +55,8 @@ public class ViewAllActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home){
-        finish();
-        return true;
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

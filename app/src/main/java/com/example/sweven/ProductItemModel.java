@@ -3,6 +3,7 @@ package com.example.sweven;
 public class ProductItemModel {
     private String productId,name,picurl;
     private double price;
+    private double qty=1;
     private boolean outOfStock;
 
     public ProductItemModel(String productId, String name, double price,String picurl,boolean outOfStock) {
@@ -11,6 +12,14 @@ public class ProductItemModel {
         this.price = price;
         this.picurl=picurl;
         this.outOfStock=outOfStock;
+    }
+    public ProductItemModel(String productId, String name, double price,String picurl,boolean outOfStock,int qty) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.picurl=picurl;
+        this.outOfStock=outOfStock;
+        this.qty=qty;
     }
 
     public String getProductId() {
@@ -31,6 +40,9 @@ public class ProductItemModel {
 
     public double getPrice() {
         return price;
+    }
+    public double getQty() {
+        return qty;
     }
 
     public void setPrice(double price) {

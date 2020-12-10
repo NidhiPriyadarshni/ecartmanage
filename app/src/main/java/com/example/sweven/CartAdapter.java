@@ -1,5 +1,6 @@
 package com.example.sweven;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,179 +11,168 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CartAdapter extends RecyclerView.Adapter {
+import static com.example.sweven.DBqueries.totalamt;
 
-    private List<CartItemModel> cartItemModelList;
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
-    public CartAdapter(List<CartItemModel> cartItemModelList) {
-        this.cartItemModelList = cartItemModelList;
+
+    public FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    public String uid=user.getUid();
+    public List<ProductItemModel> cartItemsList;
+    private OnQtyChangeListener listener;
+    public CartAdapter(List<ProductItemModel> cartItemsList,OnQtyChangeListener listener){
+        this.cartItemsList=cartItemsList;
+        this.listener=listener;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        switch (cartItemModelList.get(position).getType()) {
-            case 0:
-                return CartItemModel.CART_ITEM;
-            case 1:
-                return CartItemModel.TOTAL_AMOUNT;
-            default:
-                return -1;
-        }
-    }
+
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        switch (viewType) {
-            case CartItemModel.CART_ITEM:
-                View cartItemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cart_item_layout, viewGroup, false);
-                return new CartItemViewHolder(cartItemView);
-            case CartItemModel.TOTAL_AMOUNT:
-                View cartTotalView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cart_total_amount_layout, viewGroup, false);
-                return new CartTotalAmountViewholder(cartTotalView);
-            default:
-                return null;
-        }
+    public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cart_item_layout,viewGroup,false);
+        return new CartAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        switch (cartItemModelList.get(position).getType()) {
-            case CartItemModel.CART_ITEM:
-                int resource = cartItemModelList.get(position).getProductImage();
-                String title = cartItemModelList.get(position).getProductTitle();
-                int freeCoupons = cartItemModelList.get(position).getFreeCoupons();
-                String productPrice = cartItemModelList.get(position).getProductPrice();
-                String cuttedPrice = cartItemModelList.get(position).getCuttedPrice();
-                int offersApplied = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewHolder)viewHolder).setItemDetails(resource,title,freeCoupons,productPrice,cuttedPrice,offersApplied);
-                break;
-            case CartItemModel.TOTAL_AMOUNT:
-                String totalItems = cartItemModelList.get(position).getTotalItems();
-                String totalItemsPrice = cartItemModelList.get(position).getTotalItemPrice();
-                String deliveryPrice = cartItemModelList.get(position).getDeliveryPrice();
-                String totalAmount = cartItemModelList.get(position).getTotalAmount();
-                String savedAmount = cartItemModelList.get(position).getSavedAmount();
-                ((CartTotalAmountViewholder)viewHolder).setTotalAmount(totalItems,totalItemsPrice,deliveryPrice,totalAmount,savedAmount);
+    public void onBindViewHolder(@NonNull final CartAdapter.ViewHolder viewHolder, int i) {
+        final ProductItemModel productitem=cartItemsList.get(i);
+        String itemname=productitem.getName();
+        String itempic=productitem.getPicurl();
+        final String itemprice="Rs "+productitem.getPrice();
+        final String itemqty= productitem.getQty()+"";//String.valueOf(((int) productitem.getQty()));
+        final String productid=productitem.getProductId();
+        boolean isavailable=!(productitem.isOutOfStock());
+        viewHolder.remove.setText("Remove");
+        viewHolder.productQuantity.setText(itemqty);
+        if (!itempic.equals("null")){
+            Glide.with(viewHolder.itemView.getContext()).load(itempic)./*apply(new RequestOptions().placeholder(R.mipmap.icon_placeholder)).*/into(viewHolder.imageView);
+        }else{
 
-                break;
-            default:
-                return;
         }
+        viewHolder.name.setText(itemname);
+        viewHolder.price.setText(itemprice);
+        if(!isavailable){
+            viewHolder.outofstock.setVisibility(View.VISIBLE);
+
+        }else{
+            viewHolder.outofstock.setVisibility(View.GONE);
+
+        }
+        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseFirestore.collection("USERS").document(uid).update("cart", FieldValue.arrayRemove(productid))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly removed from Cart.",Toast.LENGTH_LONG).show();
+
+                                    double ttl=Double.parseDouble(viewHolder.productQuantity.getText().toString());
+                                    ttl=ttl*productitem.getPrice();
+                                    totalamt=totalamt-ttl;
+                                    listener.onQtyChange();
+                                    cartItemsList.remove(viewHolder.getAdapterPosition());
+                                    notifyDataSetChanged();
+                                }
+                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+            }
+        });
+        viewHolder.productQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog quantityDialog = new Dialog(viewHolder.itemView.getContext());
+                quantityDialog.setContentView(R.layout.quantity_dialog);
+                quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                quantityDialog.setCancelable(false);
+                final EditText quantityNo =quantityDialog.findViewById(R.id.quantiy_no);
+                Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
+                Button okBtn = quantityDialog.findViewById(R.id.ok_btn);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        quantityDialog.dismiss();
+                    }
+                });
+                okBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        double ttl=Double.parseDouble(quantityNo.getText().toString())-Double.parseDouble(viewHolder.productQuantity.getText().toString());
+                        ttl=ttl*productitem.getPrice();
+                        totalamt=totalamt+ttl;
+                        int t=(int)totalamt;
+                        Map<String, Object> userdata = new HashMap<>();
+                        userdata.put("qty",Double.parseDouble(quantityNo.getText().toString()));
+                        firebaseFirestore.collection("USERS").document(uid).collection("CART").document(productid).set(userdata, SetOptions.merge());
+                        listener.onQtyChange();
+                        viewHolder.productQuantity.setText(quantityNo.getText());
+                        quantityDialog.dismiss();
+
+                    }
+                });
+                quantityDialog.show();
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return cartItemModelList.size();
+        return cartItemsList.size();
     }
 
-    class CartItemViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageView productImage;
         private ImageView freeCouponIcon;
-        private TextView productTitle;
         private TextView freeCoupons;
-        private TextView productPrice;
         private TextView cuttedPrice;
         private TextView offersApplied;
         private TextView couponsApplied;
         private TextView productQuantity;
-
-        public CartItemViewHolder(@NonNull View itemView) {
+        private ImageView imageView;
+        private TextView name;
+        private TextView price;
+        private TextView remove;
+        private Button outofstock;
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.product_image);
-            productTitle = itemView.findViewById(R.id.product_title);
             freeCouponIcon = itemView.findViewById(R.id.free_coupon_icon);
             freeCoupons = itemView.findViewById(R.id.tv_free_coupon);
-            productPrice = itemView.findViewById(R.id.product_price);
             cuttedPrice = itemView.findViewById(R.id.cutted_price);
             offersApplied = itemView.findViewById(R.id.offers_applied);
             couponsApplied = itemView.findViewById(R.id.coupons_applied);
             productQuantity = itemView.findViewById(R.id.product_quantity);
-        }
+            imageView=itemView.findViewById(R.id.product_image);
+            name=itemView.findViewById(R.id.product_title);
+            price =itemView.findViewById(R.id.product_price);
+            outofstock=itemView.findViewById(R.id.outofstock);
+            remove=itemView.findViewById(R.id.remove_item_btn);
 
-        private void setItemDetails(int resource, String title, int freeCouponsNo, String productPriceText, String cuttedPriceText, int offerAppliedNo) {
-            productImage.setImageResource(resource);
-            productTitle.setText(title);
-
-            if (freeCouponsNo > 0) {
-                freeCouponIcon.setVisibility(View.VISIBLE);
-                freeCoupons.setVisibility(View.VISIBLE);
-                if (freeCouponsNo == 1) {
-                    freeCoupons.setText("free " + freeCouponsNo + " coupon");
-                } else {
-                    freeCoupons.setText("free " + freeCouponsNo + " coupons");
-                }
-            } else {
-                freeCouponIcon.setVisibility(View.INVISIBLE);
-                freeCoupons.setVisibility(View.INVISIBLE);
-            }
-            productPrice.setText(productPriceText);
-            cuttedPrice.setText(cuttedPriceText);
-            if (offerAppliedNo > 0) {
-                offersApplied.setVisibility(View.VISIBLE);
-                offersApplied.setText(offerAppliedNo  +  " Offers Applied");
-            } else {
-                offersApplied.setVisibility(View.INVISIBLE);
-            }
-            productQuantity.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Dialog quantityDialog = new Dialog(itemView.getContext());
-                    quantityDialog.setContentView(R.layout.quantity_dialog);
-                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                    quantityDialog.setCancelable(false);
-                    final EditText quantityNo =quantityDialog.findViewById(R.id.quantiy_no);
-                    Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
-                    Button okBtn = quantityDialog.findViewById(R.id.ok_btn);
-                    cancelBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        quantityDialog.dismiss();
-                        }
-                    });
-                    okBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            productQuantity.setText("Qty: "+quantityNo.getText());
-                            quantityDialog.dismiss();
-                        }
-                    });
-                    quantityDialog.show();
-                }
-            });
         }
     }
-
-    class CartTotalAmountViewholder extends RecyclerView.ViewHolder {
-
-        private TextView totalItems;
-        private TextView totalItemPrice;
-        private TextView deliveryPrice;
-        private TextView totalAmount;
-        private TextView savedAmount;
-
-        public CartTotalAmountViewholder(@NonNull View itemView) {
-            super(itemView);
-            totalItems = itemView.findViewById(R.id.total_items);
-            totalItemPrice = itemView.findViewById(R.id.total_items_price);
-            deliveryPrice = itemView.findViewById(R.id.delivery_price);
-            totalAmount = itemView.findViewById(R.id.total_price);
-            savedAmount = itemView.findViewById(R.id.saved_amount);
-        }
-
-        private void setTotalAmount(String totalItemsText, String totalItemsPriceText, String deliveryPriceText, String totalAmountText, String savedAmountText) {
-            totalItems.setText(totalItemsText);
-            totalItemPrice.setText(totalItemsPriceText);
-            deliveryPrice.setText(deliveryPriceText);
-            totalAmount.setText(totalAmountText);
-            savedAmount.setText(savedAmountText);
-
-        }
-
+    public interface OnQtyChangeListener{
+        void onQtyChange();
     }
 
 }
+

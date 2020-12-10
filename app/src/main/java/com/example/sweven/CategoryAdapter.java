@@ -35,10 +35,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder viewHolder, int position) {
-    String icon = categoryModelList.get(position).getCategoryIconLink();
-    String name= categoryModelList.get(position).getCategoryName();
-    viewHolder.setCategory(name,position);
-    viewHolder.setCategoryIcon(icon);
+        String icon = categoryModelList.get(position).getCategoryIconLink();
+        String name= categoryModelList.get(position).getCategoryName();
+        viewHolder.setCategory(name,position);
+        viewHolder.setCategoryIcon(icon);
         if(lastposition < position){
             Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(),R.anim.fade_in);
             viewHolder.itemView.setAnimation(animation);
@@ -65,7 +65,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         private void setCategoryIcon(String iconUrl) {
             if (!iconUrl.equals("null")){
                 Glide.with(itemView.getContext()).load(iconUrl)./*apply(new RequestOptions().placeholder(R.mipmap.icon_placeholder)).*/into(categoryIcon);
-        }else{
+            }else{
                 categoryIcon.setImageResource(R.mipmap.home_icon);
             }
 

@@ -3,8 +3,8 @@
     package="com.example.sweven">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewAllActivity"></activity>
+        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".ViewAllActivity" />
         <activity android:name=".MyAddressesActivity" />
         <activity
             android:name=".AddAddressActivity"

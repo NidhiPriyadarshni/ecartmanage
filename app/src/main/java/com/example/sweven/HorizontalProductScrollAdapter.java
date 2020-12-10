@@ -65,15 +65,15 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
             productPrice.setText("Rs."+price+"/-");
             productDescription.setText(description);
             productTitle.setText(title);
-           if(!title.equals("")) {
-               itemView.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
-                       itemView.getContext().startActivity(productDetailsIntent);
-                   }
-               });
-           }
+            if(!title.equals("")) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        itemView.getContext().startActivity(productDetailsIntent);
+                    }
+                });
+            }
         }
 
     }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow"
     tools:context=".AddAddressActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -42,19 +41,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@mipmap/profile_placeholder"
-                tools:layout_editor_absoluteX="120dp"
-                tools:layout_editor_absoluteY="152dp" />
+
+
 
             <EditText
-                android:id="@+id/city"
+                android:id="@+id/addnew_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:hint="Name*"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimary" />
+
+            <EditText
+                android:id="@+id/addnew_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:hint="Mobile No*"
+                android:inputType="number"
+                android:textColor="@color/colorPrimary" />
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider" />
+
+
+            <EditText
+                android:id="@+id/addnew_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -65,7 +89,7 @@
                 android:textColor="@color/colorPrimary" />
 
             <EditText
-                android:id="@+id/locality"
+                android:id="@+id/addnew_locality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -80,7 +104,7 @@
                 android:textColor="@color/colorPrimary" />
 
             <EditText
-                android:id="@+id/flat_no"
+                android:id="@+id/addnew_flat_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -101,7 +125,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/pincode"
+                    android:id="@+id/addnew_pincode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -112,6 +136,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <EditText
+                    android:id="@+id/addnew_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -125,7 +150,7 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/landmark"
+                android:id="@+id/addnew_landmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -136,49 +161,8 @@
                 android:inputType="textPersonName"
                 android:textColor="@color/colorPrimary" />
 
-            <View
-                android:id="@+id/divider12"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="?android:attr/listDivider" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:hint="Name*"
-                android:inputType="textPersonName"
-                android:textColor="@color/colorPrimary" />
 
-            <EditText
-                android:id="@+id/mobile_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:hint="Mobile No*"
-                android:inputType="number"
-                android:textColor="@color/colorPrimary" />
-
-            <EditText
-                android:id="@+id/alternate_mobile_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:hint="Alternate Mobile No.(Optional)"
-                android:inputType="number"
-                android:textColor="@color/colorPrimary" />
 
             <Button
                 android:id="@+id/save_btn"

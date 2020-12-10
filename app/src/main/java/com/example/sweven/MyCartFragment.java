@@ -10,15 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.sweven.DBqueries.loadCartList;
+import static com.example.sweven.DBqueries.cartItemsList;
+import static com.example.sweven.DBqueries.totalamt;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyCartFragment extends Fragment {
+public class MyCartFragment extends Fragment implements CartAdapter.OnQtyChangeListener {
 
 
     public MyCartFragment() {
@@ -27,6 +32,7 @@ public class MyCartFragment extends Fragment {
 
     private RecyclerView cartItemsRecyclerView;
     private Button continueBtn;
+    public TextView totalv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,26 +41,27 @@ public class MyCartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueBtn=view.findViewById(R.id.cart_continue_btn);
+        totalv=(TextView) view.findViewById(R.id.total_cart_amounts);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(linearLayoutManager);
-        List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.dal, "Robin Toor Dal", 2, "Rs. 659/-", "759/-", 1, 0, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.flour, "Aashirvaad Aata", 0, "Rs. 459/-", "549/-", 1, 1, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.biscuit, "Cadbury Cookies", 2, "Rs. 80/-", "120/-", 1, 2, 0));
-        cartItemModelList.add(new CartItemModel(1, "Price (3) items", "Rs.1198/-", "Free", "Rs.1198/-", "Rs. 230/-"));
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
+        loadCartList(cartItemsRecyclerView,this,totalv);
+        CartAdapter cartAdapter = new CartAdapter(cartItemsList,this);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deliveryIntent = new Intent(getContext(),AddAddressActivity.class);
+                Intent deliveryIntent = new Intent(getContext(),DeliveryActivity.class);
                 getContext().startActivity(deliveryIntent);
             }
         });
         return view;
     }
 
+    @Override
+    public void onQtyChange() {
+        totalv.setText("Rs. "+ Integer.toString((int) totalamt) +"/-");
+    }
 }
