@@ -112,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Qty: 1"
+        android:text="1"
         android:padding="3dp"
         android:textColor="#000000"
         android:background="@drawable/border_background"
@@ -120,57 +120,59 @@
         android:drawableEnd="@mipmap/drop_down_arrow"
         android:drawablePadding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/coupons_applied"
+        app:layout_constraintStart_toEndOf="@+id/pqty"
+        app:layout_constraintTop_toBottomOf="@+id/price_cut_divider" />
+    <TextView
+        android:id="@+id/pqty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qty:"
+        android:padding="3dp"
+        android:textColor="#000000"
+        android:background="@drawable/border_background"
+        android:backgroundTint="#000000"
+        android:drawablePadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/coupons_applied"
         app:layout_constraintStart_toEndOf="@+id/product_image"
         app:layout_constraintTop_toBottomOf="@+id/price_cut_divider" />
 
     <LinearLayout
-        android:id="@+id/coupon_redeemption_layout"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="#FF3030"
-        android:gravity="right"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coupons_applied">
-
-        <TextView
-            android:id="@+id/coupon_redeemption_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Check price after coupon redemption"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent" />
-
-        <Button
-            android:id="@+id/coupon_redemption_btn"
-            android:layout_width="75dp"
-            android:layout_height="30dp"
-            android:background="@drawable/border_background"
-            android:text="Reedem"
-            android:textColor="@color/colorAccent"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/remove_item_btn"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:background="@color/colorAccent"
+        android:orientation="vertical"
+        android:background="@color/RecyclerViewsBackground"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coupon_redeemption_layout">
+        app:layout_constraintTop_toBottomOf="@id/coupons_applied"
+        >
+
         <TextView
             android:text="Remove item"
+            android:id="@+id/remove_item_btn"
             android:gravity="center"
             android:drawablePadding="4dp"
             android:drawableStart="@mipmap/bin"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/outofstock"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/btnRed"
+            android:text="Out Of Stock"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:padding="4dp"/>
     </LinearLayout>
+
+
+
+
+
+
+
+
 </android.support.constraint.ConstraintLayout>

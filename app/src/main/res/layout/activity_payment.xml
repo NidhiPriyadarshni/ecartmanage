@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/recyclerviewBackground"
-    tools:context=".MyAddressesActivity">
+    tools:context=".PaymentActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout6"
+        android:id="@+id/appBarLayout8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/payment_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -28,25 +28,32 @@
 
 
 
-    <Button
-        android:id="@+id/add_address"
-        android:background="@color/colorPrimaryDark"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:elevation="4dp"
-        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/payment_options"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout6"
-        android:text="Add a New Address"
-        android:textColor="@color/colorAccent"
-        android:padding="10dp"
-        android:textAllCaps="false"/>
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout8"
+        android:background="@color/RecyclerViewsBackground"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:elevation="4dp"
+            android:layout_margin="10dp"
+            android:text="PAYMENT OPTION"
+            android:textColor="@color/txtBlack"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
 
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/addresses_recyclerview"
+        android:id="@+id/payment_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -54,21 +61,23 @@
         app:layout_constraintBottom_toTopOf="@+id/deliver_here_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_address" />
+        app:layout_constraintTop_toBottomOf="@+id/payment_options" />
 
     <Button
-        android:id="@+id/deliver_here_btn"
+        android:id="@+id/pay_now_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Delivere Here"
+        android:text="PAY NOW"
         android:textAllCaps="false"
         android:textStyle="bold"
         android:textSize="16sp"
         android:elevation="6dp"
         android:stateListAnimator="@null"
         android:textColor="@color/colorAccent"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>

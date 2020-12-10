@@ -54,8 +54,7 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-
-    private List<ProductItemModel> productlist = new ArrayList<>();
+    private List<ProductItemModel> productlist=new ArrayList<>();
     private RecyclerView homePageRecyclerView;
     private ImageView noInternetConnection;
     public static SwipeRefreshLayout swipeRefreshLayout;
@@ -83,13 +82,13 @@ public class HomeFragment extends Fragment {
         if (networkInfo != null && networkInfo.isConnected() == true) {
             noInternetConnection.setVisibility(View.GONE);
 
-            if (productItemsList.size() == 0) {
-                loadProductList(homePageRecyclerView, getContext());
-            } else {
-                adapter = new ProductListAdapter(productItemsList);
-                adapter.notifyDataSetChanged();
+            if(productItemsList.size()==0){
+                loadProductList(homePageRecyclerView,getContext());
+            }else{
+                adapter=new ProductListAdapter(productItemsList);
+                adapter.notifyDataSetChanged();homePageRecyclerView.setAdapter(adapter);
             }
-            homePageRecyclerView.setAdapter(adapter);
+            //homePageRecyclerView.setAdapter(adapter);
 
 
         } else {
@@ -119,5 +118,6 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 
 }
