@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.ArraySet;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -346,8 +347,8 @@ public class DBqueries {
                     DocumentSnapshot document=task.getResult();
                     List<String> productidlist=(List<String>) document.get("cart");
                     cartItemsList.clear();
-
-                    for(String id:productidlist){
+if(productidlist!=null)
+{for(String id:productidlist){
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -375,6 +376,10 @@ public class DBqueries {
                             }
                         });
                     }
+                }}
+                else
+                {
+                    Log.d("ERR","ERRor");
                 }
             }
         });
