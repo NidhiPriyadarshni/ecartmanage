@@ -157,8 +157,16 @@ public class DBqueries {
                         if(documentSnapshot.get("picUrl")!=null)picurl=documentSnapshot.get("picUrl").toString();
                         if(documentSnapshot.get("isOutOfStock")!=null)outOfStock=documentSnapshot.getBoolean("isOutOfStock");
                         productItemsList.add(new ProductItemModel(productId,name,price,picurl,outOfStock));
-                        if(wishlistid.contains(productId))wishlistItemsList.add(productItemsList.get(productItemsList.size()-1));
+                        if(productId!=null) {
+                           try {
+                               if (wishlistid.contains(productId))
+                                   wishlistItemsList.add(productItemsList.get(productItemsList.size() - 1));
+                           }
+                           catch (NullPointerException e)
+                           {
 
+                           }
+                        }
                     }
                     ProductListAdapter adapter=new ProductListAdapter(productItemsList);
                     adapter.notifyDataSetChanged();
@@ -182,6 +190,7 @@ public class DBqueries {
                     DocumentSnapshot document=task.getResult();
                     List<String> productidlist=(List<String>) document.get("wishlist");
                     wishlistItemsList.clear();
+                    if(productidlist!=null){
                     for(String id:productidlist){
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -210,7 +219,7 @@ public class DBqueries {
                             }
                         });
                     }
-                }
+                }}
             }
         });
 
@@ -228,6 +237,7 @@ public class DBqueries {
                     List<String> productidlist=(List<String>) document.get("cart");
                     cartItemsList.clear();
                     totalamt = 0;
+                    if(productidlist!=null){
                     for(String id:productidlist){
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -277,7 +287,7 @@ public class DBqueries {
                                 }
                             }
                         });
-                    }
+                    }}
                 }
             }
         });
