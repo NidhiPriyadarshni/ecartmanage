@@ -34,6 +34,7 @@
         android:id="@+id/payment_options"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout8"
         android:background="@color/RecyclerViewsBackground"
         android:orientation="vertical">
@@ -41,27 +42,66 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:elevation="4dp"
-            android:layout_margin="10dp"
             android:text="PAYMENT OPTION"
             android:textColor="@color/txtBlack"
             android:textAlignment="center"
             android:padding="10dp"
             android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/payment_cod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Cash On Delivery"
+            android:padding="10dp"
+            android:background="@color/colorAccent"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/payment_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Credit/Debit Card"
+            android:padding="10dp"
+            android:background="@color/colorAccent"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/payment_net"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Net Banking"
+            android:padding="10dp"
+            android:background="@color/colorAccent"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
-
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/payment_recyclerview"
+    <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/recyclerviewBackground"
-        app:layout_constraintBottom_toTopOf="@+id/deliver_here_btn"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toTopOf="@id/pay_now_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_options" />
+        app:layout_constraintEnd_toStartOf="@id/payment_total"
+        android:text="Total Amount"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:textAllCaps="false"/>
+    <TextView
+        android:id="@+id/payment_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toTopOf="@id/pay_now_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/txtBlack"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:textAllCaps="false"/>
+
+
+
+
 
     <Button
         android:id="@+id/pay_now_btn"
