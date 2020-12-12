@@ -46,14 +46,23 @@
         app:layout_constraintTop_toBottomOf="@+id/order_product_title"/>
 
     <TextView
+        android:id="@+id/order_qty1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:text="Qty:"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/order_price"
+        app:layout_constraintStart_toEndOf="@+id/order_price" />
+    <TextView
         android:id="@+id/order_qty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="42dp"
-        android:text="Qty: 1"
+        android:text="1"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/order_price"
-        app:layout_constraintStart_toEndOf="@+id/order_price" />
+        app:layout_constraintStart_toEndOf="@+id/order_qty1" />
 
 
 

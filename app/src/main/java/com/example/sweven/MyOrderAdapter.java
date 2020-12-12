@@ -52,7 +52,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         String itemname=productitem.getName();
         String itempic=productitem.getPicurl();
         final String itemprice="Rs "+productitem.getPrice();
-        final String itemqty= "Qty: "+productitem.getQty();
+        final String itemqty= productitem.getQty()+"";
         final String productid=productitem.getProductId();
         viewHolder.productQuantity.setText(itemqty);
         if (!itempic.equals("null")){
