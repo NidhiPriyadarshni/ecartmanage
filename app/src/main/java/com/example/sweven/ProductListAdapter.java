@@ -83,7 +83,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                                 }
 
 
-                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
+                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again,Network issue",Toast.LENGTH_LONG).show();
 
                             }
                         });
@@ -100,7 +100,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()) Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly added to your Cart.",Toast.LENGTH_LONG).show();
-                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
+                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again,Networ issue",Toast.LENGTH_LONG).show();
                             }
                         });
             }

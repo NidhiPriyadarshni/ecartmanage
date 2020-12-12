@@ -237,6 +237,7 @@ public class SignUpFragment extends Fragment {
                                             }
                                         });
 
+
                                     }else{
                                         progressBar.setVisibility(View.INVISIBLE);
                                         signUpBtn.setEnabled(true);

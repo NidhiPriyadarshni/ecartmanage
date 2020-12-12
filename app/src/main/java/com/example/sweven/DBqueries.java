@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.ArraySet;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -157,7 +158,20 @@ public class DBqueries {
                         if(documentSnapshot.get("picUrl")!=null)picurl=documentSnapshot.get("picUrl").toString();
                         if(documentSnapshot.get("isOutOfStock")!=null)outOfStock=documentSnapshot.getBoolean("isOutOfStock");
                         productItemsList.add(new ProductItemModel(productId,name,price,picurl,outOfStock));
+
                         if(wishlistid!=null&&wishlistid.contains(productId))wishlistItemsList.add(productItemsList.get(productItemsList.size()-1));
+
+
+                        if(productId!=null) {
+                           try {
+                               if (wishlistid.contains(productId))
+                                   wishlistItemsList.add(productItemsList.get(productItemsList.size() - 1));
+                           }
+                           catch (NullPointerException e)
+                           {
+
+                           }
+                        }
 
                     }
                     ProductListAdapter adapter=new ProductListAdapter(productItemsList);
@@ -181,8 +195,11 @@ public class DBqueries {
                 if(task.isSuccessful()&&task.getResult()!=null){
                     DocumentSnapshot document=task.getResult();
                     List<String> productidlist=(List<String>) document.get("wishlist");
+
                     if(wishlistItemsList!=null)wishlistItemsList.clear();
                     if(productidlist!=null)for(String id:productidlist){
+                 
+
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -210,7 +227,7 @@ public class DBqueries {
                             }
                         });
                     }
-                }
+                }}
             }
         });
 
@@ -228,7 +245,10 @@ public class DBqueries {
                     List<String> productidlist=(List<String>) document.get("cart");
                     if(cartItemsList!=null)cartItemsList.clear();
                     totalamt = 0;
+
                     if(productidlist!=null)for(String id:productidlist){
+                   
+
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -277,7 +297,7 @@ public class DBqueries {
                                 }
                             }
                         });
-                    }
+                    }}
                 }
             }
         });
@@ -412,9 +432,13 @@ public class DBqueries {
                 if(task.isSuccessful()&&task.getResult()!=null){
                     DocumentSnapshot document=task.getResult();
                     List<String> productidlist=(List<String>) document.get("cart");
+
                     if(cartItemsList!=null)cartItemsList.clear();
 
                     if(productidlist!=null)for(String id:productidlist){
+
+                    
+
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -442,6 +466,10 @@ public class DBqueries {
                             }
                         });
                     }
+                }}
+                else
+                {
+                    Log.d("ERR","ERRor");
                 }
             }
         });

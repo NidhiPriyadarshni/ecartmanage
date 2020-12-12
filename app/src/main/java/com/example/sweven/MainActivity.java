@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FrameLayout frameLayout;
     private ImageView actionBarLogo;
     private int currentFragment = -1;
+    private FirebaseUser user;
     private NavigationView navigationView;
 
     @Override
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View navheader=navigationView.getHeaderView(0);
         TextView name=(TextView)navheader.findViewById(R.id.main_fullname);
         TextView mail=(TextView)navheader.findViewById(R.id.main_email);
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+         user= FirebaseAuth.getInstance().getCurrentUser();
         if(user.getDisplayName()!=null)name.setText(user.getDisplayName());
         if(user.getEmail()!=null)mail.setText(user.getEmail());
 
@@ -138,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //todo:notifications
             return true;
         } else if (id == R.id.main_cart_icon) {
+
+            if(user==null){
             final Dialog signInDialog = new Dialog(MainActivity.this);
             signInDialog.setContentView(R.layout.sign_in_dialog);
             signInDialog.setCancelable(true);
@@ -161,8 +164,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(registerIntent);
                 }
             });
-            signInDialog.show();
-            //gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
+            signInDialog.show();}
+            else
+            gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
             return true;
         } else if (id == android.R.id.home) {
             if (showCart) {
