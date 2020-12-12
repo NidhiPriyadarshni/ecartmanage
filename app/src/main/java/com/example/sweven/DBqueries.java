@@ -31,6 +31,8 @@ public class DBqueries {
     public static List<ProductItemModel> wishlistItemsList =new ArrayList<>();
     public static List<ProductItemModel> cartItemsList =new ArrayList<>();
     public static List<ProductItemModel> orderItemsList =new ArrayList<>();
+    public static List<ProductItemModel> retailerItemsList =new ArrayList<>();
+    public static List<ProductItemModel> warehouseItemsList =new ArrayList<>();
     public static List<List<HomePageModel>> lists = new ArrayList<>();
     public static List<String> loadCategoriesNames = new ArrayList<>();
     public static double totalamt;
@@ -368,8 +370,139 @@ public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
         }
 
+    public static void loadRetailerItemsList(final RecyclerView orderRecyclerView) {
+        userid=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-public static void loadWishlist() {
+        firebaseFirestore.collection("RETAILER").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document=task.getResult();
+                    List<String> productidlist=(List<String>) document.get("productList");
+                    if(retailerItemsList!=null)retailerItemsList.clear();
+                    if(productidlist!=null)for(String id:productidlist){
+                        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()&&task.getResult()!=null){
+                                    DocumentSnapshot documentSnapshot=task.getResult();
+                                    final String[] productId = {"M.."};
+                                    String name = "xyz";
+                                    String picurl = null;
+                                    double price = 0;
+                                    final double[] qty = {1};
+                                    boolean outOfStock = false;
+                                    if (documentSnapshot.get("productId") != null)
+                                        productId[0] = documentSnapshot.get("productId").toString();
+                                    if (documentSnapshot.get("name") != null)
+                                        name = documentSnapshot.get("name").toString();
+                                    if (documentSnapshot.get("price") != null)
+                                        price = documentSnapshot.getDouble("price");
+                                    if (documentSnapshot.get("picUrl") != null)
+                                        picurl = documentSnapshot.get("picUrl").toString();
+                                    if (documentSnapshot.get("isOutOfStock") != null)
+                                        outOfStock = documentSnapshot.getBoolean("isOutOfStock");
+                                    final String finalName = name;
+                                    final double[] finalPrice = {price};
+                                    final String finalPicurl = picurl;
+                                    final boolean finalOutOfStock = outOfStock;
+                                    firebaseFirestore.collection("RETAILER").document(userid).collection("PRODUCT_INFO").document(productId[0]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()&&task.getResult()!=null){
+                                                DocumentSnapshot doc=task.getResult();
+                                                qty[0] =1;
+                                                if (doc.get("qty") != null)
+                                                    qty[0] = doc.getDouble("qty");
+                                                if(doc.get("price")!=null) finalPrice[0] =doc.getDouble("price");
+                                                retailerItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0]));
+                                                RetailerAdapter adapter=new RetailerAdapter(retailerItemsList);
+                                                adapter.notifyDataSetChanged();
+                                                orderRecyclerView.setAdapter(adapter);
+                                            }
+                                        }
+                                    });
+
+
+
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    }
+
+    public static void loadWarehouseItemsList(final RecyclerView orderRecyclerView) {
+    userid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firebaseFirestore.collection("WAREHOUSE MANAGER").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document=task.getResult();
+                    List<String> productidlist=(List<String>) document.get("productList");
+                    if(warehouseItemsList!=null)warehouseItemsList.clear();
+                    if(productidlist!=null)for(String id:productidlist){
+                        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()&&task.getResult()!=null){
+                                    DocumentSnapshot documentSnapshot=task.getResult();
+                                    final String[] productId = {"M.."};
+                                    String name = "xyz";
+                                    String picurl = null;
+                                    double price = 0;
+                                    final double[] qty = {1};
+                                    boolean outOfStock = false;
+                                    if (documentSnapshot.get("productId") != null)
+                                        productId[0] = documentSnapshot.get("productId").toString();
+                                    if (documentSnapshot.get("name") != null)
+                                        name = documentSnapshot.get("name").toString();
+                                    if (documentSnapshot.get("price") != null)
+                                        price = documentSnapshot.getDouble("price");
+                                    if (documentSnapshot.get("picUrl") != null)
+                                        picurl = documentSnapshot.get("picUrl").toString();
+                                    if (documentSnapshot.get("isOutOfStock") != null)
+                                        outOfStock = documentSnapshot.getBoolean("isOutOfStock");
+                                    final String finalName = name;
+                                    final double[] finalPrice = {price};
+                                    final String finalPicurl = picurl;
+                                    final boolean finalOutOfStock = outOfStock;
+                                    firebaseFirestore.collection("WAREHOUSE MANAGER").document(userid).collection("PRODUCT_INFO").document(productId[0]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()&&task.getResult()!=null){
+                                                DocumentSnapshot doc=task.getResult();
+                                                qty[0] =1;
+                                                if (doc.get("qty") != null)
+                                                    qty[0] = doc.getDouble("qty");
+                                                if(doc.get("price")!=null) finalPrice[0] =doc.getDouble("price");
+                                                warehouseItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0]));
+                                                WarehouseAdapter adapter=new WarehouseAdapter(warehouseItemsList);
+                                                adapter.notifyDataSetChanged();
+                                                orderRecyclerView.setAdapter(adapter);
+                                            }
+                                        }
+                                    });
+
+
+
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    }
+
+
+
+    public static void loadWishlist() {
 
 
         firebaseFirestore.collection("USERS").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

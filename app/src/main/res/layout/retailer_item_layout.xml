@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorAccent"
+    android:elevation="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/retailer_product_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/product_image" />
+
+    <TextView
+        android:id="@+id/retailer_product_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Pixel 2"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/retailer_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="20dp"
+        android:text="Rs 00.0"
+        android:textColor="@color/txtBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/retailer_product_title"/>
+
+    <TextView
+        android:id="@+id/retailer_qty1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:text="Qty:"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/retailer_price"
+        app:layout_constraintStart_toEndOf="@+id/retailer_price" />
+    <TextView
+        android:id="@+id/retailer_qty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:text="1"
+        android:textSize="12sp"
+        android:background="@drawable/border_background"
+        android:backgroundTint="#000000"
+        android:drawableEnd="@mipmap/drop_down_arrow"
+        android:drawablePadding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/retailer_price"
+        app:layout_constraintStart_toEndOf="@+id/retailer_qty1" />
+
+
+
+</android.support.constraint.ConstraintLayout>
