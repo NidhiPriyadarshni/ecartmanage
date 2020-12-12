@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".warehousemain"></activity>
+        <activity android:name=".trackcus"></activity>
+        <activity android:name=".warehousemain" />
         <activity android:name=".Retaileramainpage" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".ViewAllActivity" />

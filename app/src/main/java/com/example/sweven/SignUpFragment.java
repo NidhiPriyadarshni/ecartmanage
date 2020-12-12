@@ -334,7 +334,7 @@ public class SignUpFragment extends Fragment {
 
 
                                     }else{
-                                        progressBar.setVisibility(View.INVISIBLE);
+                                         progressBar.setVisibility(View.INVISIBLE);
                                         signUpBtn.setEnabled(true);
                                         String error = task.getException().getMessage();
                                         Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();

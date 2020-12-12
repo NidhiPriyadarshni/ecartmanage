@@ -62,6 +62,14 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         }
         viewHolder.name.setText(itemname);
         viewHolder.price.setText(itemprice);
+        viewHolder.status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), trackcus.class);
+                intent.putExtra("productId",productid);
+                view.getContext().startActivity(intent);
+            }
+        });
 
         viewHolder.cancle.setOnClickListener(new View.OnClickListener() {
             @Override
