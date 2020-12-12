@@ -12,7 +12,8 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/yellow">
 
         <ImageButton
             android:id="@+id/sign_in_close_btn"
@@ -39,9 +40,10 @@
             android:src="@drawable/download"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2099998"
+            app:layout_constraintVertical_bias="0.082"
             tools:ignore="MissingConstraints" />
 
         <EditText
@@ -49,14 +51,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:hint="Email id"
             android:inputType="textEmailAddress"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/txtBlack"
+            android:textColorHint="@color/txtBlack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +76,8 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/txtBlack"
+            android:textColorHint="@color/txtBlack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sign_in_email"
@@ -86,13 +88,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/txtBlack"
             app:layout_constraintStart_toStartOf="@+id/sign_in_password"
             app:layout_constraintTop_toBottomOf="@+id/sign_in_password" />
 
+
         <Button
             android:id="@+id/sign_in_btn"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -100,15 +103,61 @@
             android:layout_marginBottom="8dp"
             android:background="@color/colorAccent"
             android:enabled="false"
-            android:textColor="#50000000"
-            android:text="Sign In"
+            android:text="Sign In As Customer "
             android:textAllCaps="false"
+            android:textColor="#50000000"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_forgot_password" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_forgot_password"
+            app:layout_constraintVertical_bias="0.386" />
+
+        <Button
+            android:id="@+id/sign_in_btn_ret"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/cardview_shadow_end_color"
+            android:enabled="false"
+            android:text="Sign In As Retailer"
+            android:textAllCaps="false"
+            android:textColor="#50000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.534"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_forgot_password"
+            app:layout_constraintVertical_bias="0.699" />
+
+        <Button
+            android:id="@+id/sign_in_btn_wh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/btnRed"
+            android:enabled="false"
+            android:text="Sign In As Warehouse Manager"
+            android:textAllCaps="false"
+            android:textColor="#50000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_forgot_password"
+            app:layout_constraintVertical_bias="0.115" />
 
         <TextView
             android:id="@+id/textView2"
@@ -133,7 +182,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="24dp"
             android:text="Don't have an account? Sign up!"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/txtBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
