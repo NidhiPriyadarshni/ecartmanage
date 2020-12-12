@@ -98,7 +98,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                                     Map<String, Object> userdata = new HashMap<>();
                                     userdata.put("qty",1);
                                     firebaseFirestore.collection("USERS").document(uid).collection("CART").document(productid).set(userdata, SetOptions.merge());
-
                                     Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly added to your Cart.",Toast.LENGTH_LONG).show();
                                 }
                                 else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
