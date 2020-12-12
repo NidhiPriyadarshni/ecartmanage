@@ -26,6 +26,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import static com.example.sweven.RegisterActivity.onResetPasswordFragment;
 
@@ -49,6 +52,7 @@ public class SignInFragment extends Fragment {
     private ImageButton closebtn;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
     private TextView forgotpassword;
 
@@ -64,6 +68,7 @@ public class SignInFragment extends Fragment {
         closebtn = view.findViewById(R.id.sign_in_close_btn);
         progressBar = view.findViewById(R.id.progressBar2);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore=FirebaseFirestore.getInstance();
         signinbtn = view.findViewById(R.id.sign_in_btn);
         signinbtnrt = view.findViewById(R.id.sign_in_btn_ret);
         signinbtnwh = view.findViewById(R.id.sign_in_btn_wh);
@@ -196,19 +201,53 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            FirebaseUser user=firebaseAuth.getCurrentUser();
  if(c==1){
-                            mainIntent();}
- if(c==2)
- {
-     Intent mainIntent = new Intent(getActivity(),warehousemain.class);
-     startActivity(mainIntent);
-     getActivity().finish();
+     firebaseFirestore.collection("USERS").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+         @Override
+         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+             if(task.isSuccessful()){
+                 DocumentSnapshot documentSnapshot=task.getResult();
+                 if(documentSnapshot.exists())mainIntent();
+                 else Toast.makeText(getContext(),"Invalid Customer",Toast.LENGTH_LONG).show();
+             }
+         }
+     });
  }
- if(c==3)
+ else if(c==2)
  {
-     Intent mainIntent = new Intent(getActivity(), Retaileramainpage.class);
-     startActivity(mainIntent);
-     getActivity().finish();
+
+     firebaseFirestore.collection("WAREHOUSE MANAGER").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+         @Override
+         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+             if(task.isSuccessful()){
+                 DocumentSnapshot documentSnapshot=task.getResult();
+                 if(documentSnapshot.exists()){
+                     Intent mainIntent = new Intent(getActivity(),warehousemain.class);
+                     startActivity(mainIntent);
+                     getActivity().finish();
+                 }
+                 else Toast.makeText(getContext(),"Invalid Warehouse Manager",Toast.LENGTH_LONG).show();
+             }
+         }
+     });
+ }
+ else if(c==3)
+ {
+     firebaseFirestore.collection("RETAILER").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+         @Override
+         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+             if(task.isSuccessful()){
+                 DocumentSnapshot documentSnapshot=task.getResult();
+                 if(documentSnapshot.exists()){
+                     Intent mainIntent = new Intent(getActivity(),Retaileramainpage.class);
+                     startActivity(mainIntent);
+                     getActivity().finish();
+                 }
+                 else Toast.makeText(getContext(),"Invalid Retailer",Toast.LENGTH_LONG).show();
+             }
+         }
+     });
  }
                         } else{
                             progressBar.setVisibility(View.INVISIBLE);

@@ -1,6 +1,8 @@
 package com.example.sweven;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -56,6 +59,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
+    private String location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +80,7 @@ public class SignUpFragment extends Fragment {
         progressBar = view.findViewById(R.id.sign_up_progressbar);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        location="";
         return view;
     }
 
@@ -164,6 +169,73 @@ public class SignUpFragment extends Fragment {
             public void onClick(View v) {
                 checkEmailandPassword();
             }
+        });
+        signUpBtnre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialogTheme);
+                builder.setTitle("Enter your location");
+
+// Set up the input
+                final EditText input = new EditText(getContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT );
+                builder.setView(input);
+
+// Set up the buttons
+                builder.setPositiveButton("SIGN UP", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        location = input.getText().toString();
+                        checkEmailandPasswordforret();
+                        dialog.cancel();
+                    }
+                });
+                builder.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+        });
+        signUpBtnwh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AlertDialogTheme);
+                builder.setTitle("Enter your location");
+
+// Set up the input
+                final EditText input = new EditText(getContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT );
+                builder.setView(input);
+
+// Set up the buttons
+                builder.setPositiveButton("SIGN UP", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        location = input.getText().toString();
+                        checkEmailandPasswordforwh();
+                        dialog.cancel();
+                    }
+                });
+                builder.setNegativeButton("CANCLE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+
+
         });
     }
 
@@ -288,6 +360,147 @@ public class SignUpFragment extends Fragment {
         }
 
     }
+
+
+    private void checkEmailandPasswordforret() {
+        Drawable customErrorIcon = getResources().getDrawable(R.mipmap.custom_error_icon);
+        customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
+        if (email.getText().toString().matches(emailPattern)) {
+            if (password.getText().toString().equals(confirmpassword.getText().toString())) {
+                progressBar.setVisibility(View.VISIBLE);
+                signUpBtn.setEnabled(false);
+                signUpBtn.setTextColor(Color.argb(50,0,0,0));
+                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            final FirebaseUser user=firebaseAuth.getCurrentUser();
+                            UserProfileChangeRequest profile=new UserProfileChangeRequest.Builder().setDisplayName(fullname.getText().toString()).build();
+                            user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Map<Object, String> userdata = new HashMap<>();
+                                        userdata.put("fullname",fullname.getText().toString());
+                                        userdata.put("location",location);
+                                        firebaseFirestore.collection("RETAILER").document(user.getUid()).set(userdata, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Intent mainIntent = new Intent(getActivity(),Retaileramainpage.class);
+                                                    startActivity(mainIntent);
+                                                    getActivity().finish();
+                                                }else {
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    signUpBtn.setEnabled(true);
+                                                    String error = task.getException().getMessage();
+                                                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
+                                                }
+                                            }
+                                        });
+
+
+                                    }else{
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        signUpBtn.setEnabled(true);
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
+                                    }
+                                }
+                            });
+
+
+                        } else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            signUpBtn.setEnabled(true);
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                confirmpassword.setError("Password doesn't match!", customErrorIcon);
+            }
+        } else {
+            email.setError("Invalid Email!", customErrorIcon);
+        }
+
+    }
+
+
+
+    private void checkEmailandPasswordforwh() {
+        Drawable customErrorIcon = getResources().getDrawable(R.mipmap.custom_error_icon);
+        customErrorIcon.setBounds(0, 0, customErrorIcon.getIntrinsicWidth(), customErrorIcon.getIntrinsicHeight());
+        if (email.getText().toString().matches(emailPattern)) {
+            if (password.getText().toString().equals(confirmpassword.getText().toString())) {
+                progressBar.setVisibility(View.VISIBLE);
+                signUpBtn.setEnabled(false);
+                signUpBtn.setTextColor(Color.argb(50,0,0,0));
+                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            final FirebaseUser user=firebaseAuth.getCurrentUser();
+                            UserProfileChangeRequest profile=new UserProfileChangeRequest.Builder().setDisplayName(fullname.getText().toString()).build();
+                            user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Map<Object, String> userdata = new HashMap<>();
+                                        userdata.put("fullname",fullname.getText().toString());
+                                        userdata.put("location",location);
+                                        firebaseFirestore.collection("WAREHOUSE MANAGER").document(user.getUid()).set(userdata, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Intent mainIntent = new Intent(getActivity(),warehousemain.class);
+                                                    startActivity(mainIntent);
+                                                    getActivity().finish();
+                                                }else {
+                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                    signUpBtn.setEnabled(true);
+                                                    String error = task.getException().getMessage();
+                                                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
+                                                }
+                                            }
+                                        });
+
+
+                                    }else{
+                                        progressBar.setVisibility(View.INVISIBLE);
+                                        signUpBtn.setEnabled(true);
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
+                                    }
+                                }
+                            });
+
+
+                        } else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            signUpBtn.setEnabled(true);
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                confirmpassword.setError("Password doesn't match!", customErrorIcon);
+            }
+        } else {
+            email.setError("Invalid Email!", customErrorIcon);
+        }
+
+    }
+
+
+
+
 
     private void mainIntent(){
         Intent mainIntent = new Intent(getActivity(), MainActivity.class);
