@@ -44,6 +44,8 @@ public class SignInFragment extends Fragment {
     private FrameLayout parentFrameLayout;
     private EditText email, password;
     private Button signinbtn;
+    private Button signinbtnwh;
+    private Button signinbtnrt;
     private ImageButton closebtn;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
@@ -63,6 +65,9 @@ public class SignInFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar2);
         firebaseAuth = FirebaseAuth.getInstance();
         signinbtn = view.findViewById(R.id.sign_in_btn);
+        signinbtnrt = view.findViewById(R.id.sign_in_btn_ret);
+        signinbtnwh = view.findViewById(R.id.sign_in_btn_wh);
+
         forgotpassword = view.findViewById(R.id.sign_in_forgot_password);
         return view;
     }
@@ -128,7 +133,19 @@ public class SignInFragment extends Fragment {
         signinbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkEmailandPattern();
+                checkEmailandPattern(1);
+            }
+        });
+        signinbtnwh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkEmailandPattern(2);
+            }
+        });
+        signinbtnrt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkEmailandPattern(3);
             }
         });
 
@@ -147,18 +164,29 @@ public class SignInFragment extends Fragment {
             if (!TextUtils.isEmpty(password.getText())) {
                 signinbtn.setEnabled(true);
                 signinbtn.setTextColor(Color.rgb(0, 0, 0));
+                signinbtnrt.setEnabled(true);
+                signinbtnrt.setTextColor(Color.rgb(0, 0, 0));
+                signinbtnwh.setEnabled(true);
+                signinbtnwh.setTextColor(Color.rgb(0, 0, 0));
             } else {
                 signinbtn.setEnabled(false);
                 signinbtn.setTextColor(Color.argb(50, 0, 0, 0));
-
+                signinbtnrt.setEnabled(false);
+                signinbtnrt.setTextColor(Color.argb(50, 0, 0, 0));
+                signinbtnwh.setEnabled(false);
+                signinbtnwh.setTextColor(Color.argb(50, 0, 0, 0));
             }
         } else {
             signinbtn.setEnabled(false);
             signinbtn.setTextColor(Color.argb(50, 0, 0, 0));
+            signinbtnrt.setEnabled(false);
+            signinbtnrt.setTextColor(Color.argb(50, 0, 0, 0));
+            signinbtnwh.setEnabled(false);
+            signinbtnwh.setTextColor(Color.argb(50, 0, 0, 0));
         }
     }
 
-    private void checkEmailandPattern() {
+    private void checkEmailandPattern(final int c) {
         if (email.getText().toString().matches(emailPattern)) {
             if (password.length() >=8) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -168,8 +196,20 @@ public class SignInFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-
-                            mainIntent();
+ if(c==1){
+                            mainIntent();}
+ if(c==2)
+ {
+     Intent mainIntent = new Intent(getActivity(),warehousemain.class);
+     startActivity(mainIntent);
+     getActivity().finish();
+ }
+ if(c==3)
+ {
+     Intent mainIntent = new Intent(getActivity(), Retaileramainpage.class);
+     startActivity(mainIntent);
+     getActivity().finish();
+ }
                         } else{
                             progressBar.setVisibility(View.INVISIBLE);
                             signinbtn.setEnabled(true);

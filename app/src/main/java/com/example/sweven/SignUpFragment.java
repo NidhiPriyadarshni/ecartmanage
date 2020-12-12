@@ -50,7 +50,7 @@ public class SignUpFragment extends Fragment {
     private TextView alreadyhaveanaccount;
     private FrameLayout parentFrameLayout;
     private EditText email, fullname, password, confirmpassword;
-    private Button signUpBtn;
+    private Button signUpBtn,signUpBtnre,signUpBtnwh;
     private ImageButton closeBtn;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
@@ -71,6 +71,8 @@ public class SignUpFragment extends Fragment {
         confirmpassword = view.findViewById(R.id.sign_up_confirm_password);
         closeBtn = view.findViewById(R.id.sign_up_close_btn);
         signUpBtn = view.findViewById(R.id.dialog_sign_up_btn);
+        signUpBtnre = view.findViewById(R.id.dialog_sign_up_btn_ret);
+        signUpBtnwh = view.findViewById(R.id.dialog_sign_up_btn_wh);
         progressBar = view.findViewById(R.id.sign_up_progressbar);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -182,22 +184,43 @@ public class SignUpFragment extends Fragment {
                     if (!TextUtils.isEmpty(confirmpassword.getText())) {
                         signUpBtn.setEnabled(true);
                         signUpBtn.setTextColor(Color.rgb(0, 0, 0));
+                        signUpBtnwh.setEnabled(true);
+                        signUpBtnwh.setTextColor(Color.rgb(0, 0, 0));
+                        signUpBtnre.setEnabled(true);
+                        signUpBtnre.setTextColor(Color.rgb(0, 0, 0));
                     } else {
                         signUpBtn.setEnabled(false);
                         signUpBtn.setTextColor(Color.argb(50, 0, 0, 0));
+                        signUpBtnre.setEnabled(false);
+                        signUpBtnre.setTextColor(Color.argb(50, 0, 0, 0));
+                        signUpBtnwh.setEnabled(false);
+                        signUpBtnwh.setTextColor(Color.argb(50, 0, 0, 0));
                     }
                 } else {
                     password.setError("Password must be 8 characters", customErrorIcon);
                     signUpBtn.setEnabled(false);
                     signUpBtn.setTextColor(Color.argb(50, 0, 0, 0));
+                    signUpBtnwh.setEnabled(false);
+                    signUpBtnwh.setTextColor(Color.argb(50, 0, 0, 0));
+                    signUpBtnre.setEnabled(false);
+                    signUpBtnre.setTextColor(Color.argb(50, 0, 0, 0));
                 }
             } else {
                 signUpBtn.setEnabled(false);
                 signUpBtn.setTextColor(Color.argb(50, 0, 0, 0));
+                signUpBtnre.setEnabled(false);
+                signUpBtnre.setTextColor(Color.argb(50, 0, 0, 0));
+                signUpBtnwh.setEnabled(false);
+                signUpBtnwh.setTextColor(Color.argb(50, 0, 0, 0));
+
             }
         } else {
             signUpBtn.setEnabled(false);
             signUpBtn.setTextColor(Color.argb(50, 0, 0, 0));
+            signUpBtnre.setEnabled(false);
+            signUpBtnre.setTextColor(Color.argb(50, 0, 0, 0));
+            signUpBtnwh.setEnabled(false);
+            signUpBtnwh.setTextColor(Color.argb(50, 0, 0, 0));
         }
 
     }

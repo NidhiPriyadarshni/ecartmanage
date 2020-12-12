@@ -163,14 +163,14 @@ public class DBqueries {
 
 
                         if(productId!=null) {
-                           try {
-                               if (wishlistid.contains(productId))
-                                   wishlistItemsList.add(productItemsList.get(productItemsList.size() - 1));
-                           }
-                           catch (NullPointerException e)
-                           {
+                            try {
+                                if (wishlistid.contains(productId))
+                                    wishlistItemsList.add(productItemsList.get(productItemsList.size() - 1));
+                            }
+                            catch (NullPointerException e)
+                            {
 
-                           }
+                            }
                         }
 
                     }
@@ -198,7 +198,7 @@ public class DBqueries {
 
                     if(wishlistItemsList!=null)wishlistItemsList.clear();
                     if(productidlist!=null)for(String id:productidlist){
-                 
+
 
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -228,10 +228,9 @@ public class DBqueries {
                         });
                     }
                 }}
-            }
         });
 
-    }
+}
 
 
     public static void loadCartList(final RecyclerView cartRecyclerView, final CartAdapter.OnQtyChangeListener listener, final TextView totaltv) {
@@ -247,7 +246,7 @@ public class DBqueries {
                     totalamt = 0;
 
                     if(productidlist!=null)for(String id:productidlist){
-                   
+
 
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -298,89 +297,89 @@ public class DBqueries {
                             }
                         });
                     }}
-                }
             }
         });
-
-    }
-
-    public static void loadOrderList(final RecyclerView orderRecyclerView) {
-
-
-        firebaseFirestore.collection("USERS").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document=task.getResult();
-                    List<String> productidlist=(List<String>) document.get("order");
-                    if(orderItemsList!=null)orderItemsList.clear();
-                    if(productidlist!=null)for(String id:productidlist){
-                        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()&&task.getResult()!=null){
-                                    DocumentSnapshot documentSnapshot=task.getResult();
-                                    final String[] productId = {"M.."};
-                                    String name = "xyz";
-                                    String picurl = null;
-                                    double price = 0;
-                                    final double[] qty = {1};
-                                    boolean outOfStock = false;
-                                    if (documentSnapshot.get("productId") != null)
-                                        productId[0] = documentSnapshot.get("productId").toString();
-                                    if (documentSnapshot.get("name") != null)
-                                        name = documentSnapshot.get("name").toString();
-                                    if (documentSnapshot.get("price") != null)
-                                        price = documentSnapshot.getDouble("price");
-                                    if (documentSnapshot.get("picUrl") != null)
-                                        picurl = documentSnapshot.get("picUrl").toString();
-                                    if (documentSnapshot.get("isOutOfStock") != null)
-                                        outOfStock = documentSnapshot.getBoolean("isOutOfStock");
-                                    final String finalName = name;
-                                    final double[] finalPrice = {price};
-                                    final String finalPicurl = picurl;
-                                    final boolean finalOutOfStock = outOfStock;
-                                    firebaseFirestore.collection("USERS").document(userid).collection("ORDER").document(productId[0]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if(task.isSuccessful()&&task.getResult()!=null){
-                                                DocumentSnapshot doc=task.getResult();
-                                                qty[0] =1;
-                                                if (doc.get("qty") != null)
-                                                    qty[0] = doc.getDouble("qty");
-                                                if(doc.get("price")!=null) finalPrice[0] =doc.getDouble("price");
-                                                orderItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0]));
-                                                MyOrderAdapter adapter=new MyOrderAdapter(orderItemsList);
-                                                adapter.notifyDataSetChanged();
-                                                orderRecyclerView.setAdapter(adapter);
-                                            }
-                                        }
-                                    });
-
-
-
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
     }
 
 
-    public static void loadWishlist() {
+
+public static void loadOrderList(final RecyclerView orderRecyclerView) {
 
 
         firebaseFirestore.collection("USERS").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()&&task.getResult()!=null){
-                    DocumentSnapshot document=task.getResult();
-                    if(wishlistid!=null)wishlistid.clear();
-                    wishlistid=(List<String>) document.get("wishlist");
-                    if(wishlistItemsList!=null)wishlistItemsList.clear();
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if(task.isSuccessful()){
+        DocumentSnapshot document=task.getResult();
+        List<String> productidlist=(List<String>) document.get("order");
+        if(orderItemsList!=null)orderItemsList.clear();
+        if(productidlist!=null)for(String id:productidlist){
+        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if(task.isSuccessful()&&task.getResult()!=null){
+        DocumentSnapshot documentSnapshot=task.getResult();
+final String[] productId = {"M.."};
+        String name = "xyz";
+        String picurl = null;
+        double price = 0;
+final double[] qty = {1};
+        boolean outOfStock = false;
+        if (documentSnapshot.get("productId") != null)
+        productId[0] = documentSnapshot.get("productId").toString();
+        if (documentSnapshot.get("name") != null)
+        name = documentSnapshot.get("name").toString();
+        if (documentSnapshot.get("price") != null)
+        price = documentSnapshot.getDouble("price");
+        if (documentSnapshot.get("picUrl") != null)
+        picurl = documentSnapshot.get("picUrl").toString();
+        if (documentSnapshot.get("isOutOfStock") != null)
+        outOfStock = documentSnapshot.getBoolean("isOutOfStock");
+final String finalName = name;
+final double[] finalPrice = {price};
+final String finalPicurl = picurl;
+final boolean finalOutOfStock = outOfStock;
+        firebaseFirestore.collection("USERS").document(userid).collection("ORDER").document(productId[0]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if(task.isSuccessful()&&task.getResult()!=null){
+        DocumentSnapshot doc=task.getResult();
+        qty[0] =1;
+        if (doc.get("qty") != null)
+        qty[0] = doc.getDouble("qty");
+        if(doc.get("price")!=null) finalPrice[0] =doc.getDouble("price");
+        orderItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0]));
+        MyOrderAdapter adapter=new MyOrderAdapter(orderItemsList);
+        adapter.notifyDataSetChanged();
+        orderRecyclerView.setAdapter(adapter);
+        }
+        }
+        });
+
+
+
+        }
+        }
+        });
+        }
+        }
+        }
+        });
+
+        }
+
+
+public static void loadWishlist() {
+
+
+        firebaseFirestore.collection("USERS").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if(task.isSuccessful()&&task.getResult()!=null){
+        DocumentSnapshot document=task.getResult();
+        if(wishlistid!=null)wishlistid.clear();
+        wishlistid=(List<String>) document.get("wishlist");
+        if(wishlistItemsList!=null)wishlistItemsList.clear();
                     /*for(String id:productidlist){
                         firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -410,69 +409,65 @@ public class DBqueries {
                                     if(documentSnapshot.get("picUrl")!=null)picurl=documentSnapshot.get("picUrl").toString();
                                     if(documentSnapshot.get("isOutOfStock")!=null)outOfStock=documentSnapshot.getBoolean("isOutOfStock");
                                     wishlistItemsList.add(new ProductItemModel(productId,name,price,picurl,outOfStock));
-
-
                                 }
                             }
                         });
                     }*/
-                }
-            }
+        }
+        }
         });
 
-    }
+        }
 
 
-    public static void loadCart() {
+public static void loadCart() {
 
 
         firebaseFirestore.collection("USERS").document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()&&task.getResult()!=null){
-                    DocumentSnapshot document=task.getResult();
-                    List<String> productidlist=(List<String>) document.get("cart");
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        if(task.isSuccessful()&&task.getResult()!=null){
+        DocumentSnapshot document=task.getResult();
+        List<String> productidlist=(List<String>) document.get("cart");
 
-                    if(cartItemsList!=null)cartItemsList.clear();
+        if(cartItemsList!=null)cartItemsList.clear();
 
-                    if(productidlist!=null)for(String id:productidlist){
-
-                    
-
-                        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()&&task.getResult()!=null){
-                                    DocumentSnapshot documentSnapshot=task.getResult();
-                                    String productId = "M..", name = "xyz", picurl = null;
-                                    double price = 0;
-                                    boolean outOfStock = false;
-                                    if (documentSnapshot.get("productId") != null)
-                                        productId = documentSnapshot.get("productId").toString();
-                                    if (documentSnapshot.get("name") != null)
-                                        name = documentSnapshot.get("name").toString();
-                                    if (documentSnapshot.get("price") != null)
-                                        price = documentSnapshot.getDouble("price");
-                                    if (documentSnapshot.get("picUrl") != null)
-                                        picurl = documentSnapshot.get("picUrl").toString();
-                                    if (documentSnapshot.get("isOutOfStock") != null)
-                                        outOfStock = documentSnapshot.getBoolean("isOutOfStock");
-                                    cartItemsList.add(new ProductItemModel(productId, name, price, picurl, outOfStock));
+        if(productidlist!=null)for(String id:productidlist){
 
 
 
+        firebaseFirestore.collection("PRODUCTS").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+@Override
+public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+    if (task.isSuccessful() && task.getResult() != null) {
+        DocumentSnapshot documentSnapshot = task.getResult();
+        String productId = "M..", name = "xyz", picurl = null;
+        double price = 0;
+        boolean outOfStock = false;
+        if (documentSnapshot.get("productId") != null)
+            productId = documentSnapshot.get("productId").toString();
+        if (documentSnapshot.get("name") != null)
+            name = documentSnapshot.get("name").toString();
+        if (documentSnapshot.get("price") != null)
+            price = documentSnapshot.getDouble("price");
+        if (documentSnapshot.get("picUrl") != null)
+            picurl = documentSnapshot.get("picUrl").toString();
+        if (documentSnapshot.get("isOutOfStock") != null)
+            outOfStock = documentSnapshot.getBoolean("isOutOfStock");
+        cartItemsList.add(new ProductItemModel(productId, name, price, picurl, outOfStock));
 
-                                }
-                            }
-                        });
-                    }
-                }}
-                else
-                {
-                    Log.d("ERR","ERRor");
-                }
-            }
-        });
 
     }
 }
+        });
+        }
+        }
+        else
+        {
+        Log.d("ERR","ERRor");
+        }
+        }
+        });
+
+        }
+        }
