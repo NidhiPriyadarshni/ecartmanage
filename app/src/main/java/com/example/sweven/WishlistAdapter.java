@@ -17,10 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
 import java.util.List;
-
-
+import java.util.Map;
 
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
@@ -93,7 +94,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly added to your Cart.",Toast.LENGTH_LONG).show();
+                                if(task.isSuccessful()){
+                                    Map<String, Object> userdata = new HashMap<>();
+                                    userdata.put("qty",1);
+                                    firebaseFirestore.collection("USERS").document(uid).collection("CART").document(productid).set(userdata, SetOptions.merge());
+
+                                    Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly added to your Cart.",Toast.LENGTH_LONG).show();
+                                }
                                 else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
                             }
                         });

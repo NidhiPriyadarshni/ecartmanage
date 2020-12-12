@@ -232,6 +232,7 @@ public class SignUpFragment extends Fragment {
                                                     signUpBtn.setEnabled(true);
                                                     String error = task.getException().getMessage();
                                                     Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+
                                                 }
                                             }
                                         });
