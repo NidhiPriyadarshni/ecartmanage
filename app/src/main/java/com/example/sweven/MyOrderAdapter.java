@@ -9,35 +9,81 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import static com.example.sweven.DBqueries.totalamt;
 
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {
 
 
-    private List<MyOrderItemModel> myOrderItemModelList;
+    private List<ProductItemModel> myOrderItemModelList;
+    public FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    public String uid=user.getUid();
 
-    public MyOrderAdapter(List<MyOrderItemModel> myOrderItemModelList) {
+    public MyOrderAdapter(List<ProductItemModel> myOrderItemModelList) {
         this.myOrderItemModelList = myOrderItemModelList;
     }
 
     @NonNull
     @Override
     public MyOrderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_order_item_layout, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.current_order_item_layout, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyOrderAdapter.ViewHolder viewHolder, int position) {
-        int resource = myOrderItemModelList.get(position).getProductImage();
-        int rating=myOrderItemModelList.get(position).getRating();
-        String title=myOrderItemModelList.get(position).getProductTitle();
-        String deliveredDate=myOrderItemModelList.get(position).getDeliveryStatus();
-        viewHolder.setData(resource,title,deliveredDate,rating);
+    public void onBindViewHolder(@NonNull final MyOrderAdapter.ViewHolder viewHolder, int position) {
+        final ProductItemModel productitem=myOrderItemModelList.get(position);
+        String itemname=productitem.getName();
+        String itempic=productitem.getPicurl();
+        final String itemprice="Rs "+productitem.getPrice();
+        final String itemqty= "Qty: "+productitem.getQty();
+        final String productid=productitem.getProductId();
+        viewHolder.productQuantity.setText(itemqty);
+        if (!itempic.equals("null")){
+            Glide.with(viewHolder.itemView.getContext()).load(itempic)./*apply(new RequestOptions().placeholder(R.mipmap.icon_placeholder)).*/into(viewHolder.imageView);
+        }else{
+
+        }
+        viewHolder.name.setText(itemname);
+        viewHolder.price.setText(itemprice);
+
+        viewHolder.cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseFirestore.collection("USERS").document(uid).update("order", FieldValue.arrayRemove(productid))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly cancelled.",Toast.LENGTH_LONG).show();
+                                    firebaseFirestore.collection("USERS").document(user.getUid()).collection("ORDER").document(productid).delete();
+                                    double ttl=Double.parseDouble(viewHolder.productQuantity.getText().toString());
+                                    ttl=ttl*productitem.getPrice();
+                                    myOrderItemModelList.remove(viewHolder.getAdapterPosition());
+                                    notifyDataSetChanged();
+                                }
+                                else Toast.makeText(viewHolder.itemView.getContext(),"Try again.",Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+            }
+        });
     }
 
     @Override
@@ -47,28 +93,23 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView productImage;
-        private ImageView orderIndicator;
-        private TextView productTitle;
-        private TextView deliveryStatus;
-        private LinearLayout rateNowContainer;
+        private TextView productQuantity;
+        private ImageView imageView;
+        private TextView name;
+        private TextView price;
+        private Button cancle;
+        private Button status;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.product_image);
-            productTitle=itemView.findViewById(R.id.product_title);
-            orderIndicator=itemView.findViewById(R.id.order_indicator);
-            deliveryStatus = itemView.findViewById(R.id.order_delivered_date);
-            rateNowContainer = itemView.findViewById(R.id.rate_now_container);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent orderDetailIntent = new Intent(itemView.getContext(),OrderDetailsActivity.class);
-                    itemView.getContext().startActivity(orderDetailIntent);
-                }
-            });
+            productQuantity = itemView.findViewById(R.id.order_qty);
+            imageView=itemView.findViewById(R.id.order_product_image);
+            name=itemView.findViewById(R.id.order_product_title);
+            price =itemView.findViewById(R.id.order_price);
+            cancle=itemView.findViewById(R.id.order_cancle);
+            status=itemView.findViewById(R.id.order_status);
         }
-        private void setData(int resource,String title,String deliveredDate,int rating){
+        /*private void setData(int resource,String title,String deliveredDate,int rating){
             productImage.setImageResource(resource);
             productTitle.setText(title);
             if(deliveredDate.equals("Cancelled")){
@@ -78,7 +119,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             }
             deliveryStatus.setText(deliveredDate);
 
-            /* ********** RATINGS LAYOUT ******* */
+            //* ********** RATINGS LAYOUT *******
             setRating(rating);
             for (int i = 0; i < rateNowContainer.getChildCount(); i++) {
                 final int starPosition = i;
@@ -89,7 +130,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     }
                 });
             }
-            /*********** RATINGS LAYOUT ******/
+            //*********** RATINGS LAYOUT ******
 
         }
         private void setRating(int starPosition) {
@@ -100,6 +141,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ffbb00")));
                 }
             }
-        }
+        }*/
     }
 }

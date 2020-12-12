@@ -28,6 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.sweven.RegisterActivity.setSignUpFragment;
+import static com.example.sweven.DBqueries.cartItemsList;
+import static com.example.sweven.DBqueries.orderItemsList;
+import static com.example.sweven.DBqueries.wishlistItemsList;
 import static com.example.sweven.DBqueries.loadWishlist;
 import static com.example.sweven.DBqueries.loadCart;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -205,8 +208,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
         } else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
+            if(orderItemsList!=null)orderItemsList.clear();
+            if(cartItemsList!=null)cartItemsList.clear();
+            if(wishlistItemsList!=null)wishlistItemsList.clear();
             Intent registerintent = new Intent(MainActivity.this,RegisterActivity.class);
             startActivity(registerintent);
+
             finish();
         }
 

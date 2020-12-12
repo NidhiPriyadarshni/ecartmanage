@@ -84,7 +84,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(viewHolder.itemView.getContext(),"Product successfuly removed from Cart.",Toast.LENGTH_LONG).show();
-
+                                    firebaseFirestore.collection("USERS").document(user.getUid()).collection("CART").document(productid).delete();
                                     double ttl=Double.parseDouble(viewHolder.productQuantity.getText().toString());
                                     ttl=ttl*productitem.getPrice();
                                     totalamt=totalamt-ttl;

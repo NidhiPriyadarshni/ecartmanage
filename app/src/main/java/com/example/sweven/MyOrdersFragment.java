@@ -8,9 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.example.sweven.DBqueries.loadOrderList;
+import static com.example.sweven.DBqueries.orderItemsList;
 
 
 /**
@@ -34,14 +37,11 @@ public class MyOrdersFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myOrdersRecyclerView.setLayoutManager(linearLayoutManager);
-        List<MyOrderItemModel> myOrderItemModelList = new ArrayList<>();
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.flour,2,"Aashirvaad Aata","Delivered on Mon,15th JAN 2019"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.dal,1,"Robin Toor Dal","Delivered on Mon,15th FEB 2019"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.deo,0,"Police Deo","Cancelled"));
-        myOrderItemModelList.add(new MyOrderItemModel(R.drawable.perfumes,4,"Pixel 2XL","Delivered on Mon,15th MAR 2019"));
-        MyOrderAdapter myOrderAdapter=new MyOrderAdapter(myOrderItemModelList);
-        myOrdersRecyclerView.setAdapter(myOrderAdapter);
-        myOrderAdapter.notifyDataSetChanged();
+
+        loadOrderList(myOrdersRecyclerView);
+        MyOrderAdapter adapter=new MyOrderAdapter(orderItemsList);
+        myOrdersRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         return view;
     }
 
