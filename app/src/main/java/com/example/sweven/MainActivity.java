@@ -209,7 +209,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_my_wishlist) {
             gotoFragment("My Wishlist", new MyWishlistFragment(), WISHLIST_FRAGMENT);
         } else if (id == R.id.nav_my_account) {
-            gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
+            //gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
+            Intent rt = new Intent(MainActivity.this,trackcus.class);
+            startActivity(rt);
         } else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
             if(orderItemsList!=null)orderItemsList.clear();
