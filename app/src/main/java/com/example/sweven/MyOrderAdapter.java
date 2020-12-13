@@ -51,6 +51,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         final ProductItemModel productitem=myOrderItemModelList.get(position);
         String itemname=productitem.getName();
         String itempic=productitem.getPicurl();
+        final int status= productitem.getStatus();
         final String itemprice="Rs "+productitem.getPrice();
         final String itemqty= productitem.getQty()+"";
         final String productid=productitem.getProductId();
@@ -67,6 +68,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), trackcus.class);
                 intent.putExtra("productId",productid);
+                intent.putExtra("status",status);
                 view.getContext().startActivity(intent);
             }
         });
