@@ -326,6 +326,7 @@ final String[] productId = {"M.."};
         String picurl = null;
         double price = 0;
 final double[] qty = {1};
+            final double[] status = {1};
         boolean outOfStock = false;
         if (documentSnapshot.get("productId") != null)
         productId[0] = documentSnapshot.get("productId").toString();
@@ -347,10 +348,10 @@ public void onComplete(@NonNull Task<DocumentSnapshot> task) {
         if(task.isSuccessful()&&task.getResult()!=null){
         DocumentSnapshot doc=task.getResult();
         qty[0] =1;
-        if (doc.get("qty") != null)
-        qty[0] = doc.getDouble("qty");
+        if (doc.get("qty") != null) qty[0] = doc.getDouble("qty");
+        if (doc.get("status") != null) status[0] = doc.getDouble("status");
         if(doc.get("price")!=null) finalPrice[0] =doc.getDouble("price");
-        orderItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0]));
+        orderItemsList.add(new ProductItemModel(productId[0], finalName, finalPrice[0], finalPicurl,finalOutOfStock, (int) qty[0],(int) status[0]));
         MyOrderAdapter adapter=new MyOrderAdapter(orderItemsList);
         adapter.notifyDataSetChanged();
         orderRecyclerView.setAdapter(adapter);

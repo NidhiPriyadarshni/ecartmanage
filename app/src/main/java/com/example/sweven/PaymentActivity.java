@@ -79,6 +79,8 @@ public class PaymentActivity extends AppCompatActivity {
                     for(final ProductItemModel product:cartItemsList){
                         final Map<String, Object> userdata = new HashMap<>();
                         userdata.put("qty",product.getQty());
+                        userdata.put("status",0);
+                        userdata.put("price",product.getPrice());
                         firebaseFirestore.collection("USERS").document(user.getUid()).collection("ORDER").document(product.getProductId()).set(userdata, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
